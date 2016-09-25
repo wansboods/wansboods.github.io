@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>甲子· 映像</title>
+  <subtitle>生活點滴積累</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://192.168.8.137:4000/"/>
+  <updated>2016-09-25T03:40:07.896Z</updated>
+  <id>http://192.168.8.137:4000/</id>
+  
+  <author>
+    <name>sean.Wan</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>硬盘SMART检测参数详解</title>
+    <link href="http://192.168.8.137:4000/2016/01/02/%E7%A1%AC%E7%9B%98SMART%E6%A3%80%E6%B5%8B%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/"/>
+    <id>http://192.168.8.137:4000/2016/01/02/硬盘SMART检测参数详解/</id>
+    <published>2016-01-01T16:00:00.000Z</published>
+    <updated>2016-09-25T03:40:07.896Z</updated>
+    
+    <content type="html"><![CDATA[<p>现代硬件驱动器一般支持SMART（自我监测分析和报告技术），它能够监视整个硬盘驱动器的健康状况，并且当硬盘驱动器即将故障的时候会发出警告。</p>
+<p>一般硬件厂商提供的磁盘工具，是在系统重启后检查磁盘驱动的健康状况，而SMART可以不用重启系统就可以检查硬盘驱动器的健康程度。</p>
+<p>在linux中，工具包的名字为 <strong>smartmontools</strong></p>
+<p>在CentOS中可以使用 yum install smartmontools来安装工具<br>首先通过smartctl -i /dev/sda 来检查一下硬盘是否具有 SMART 特性</p>
+<p>下面是smart工具的说明文档，里面有<a href="https://www.smartmontools.org/" target="_blank" rel="external">详细的说明</a></p>
+<p>这个是我在虚拟机中测试的不支持<br><img src="http://www.linuxidc.com/upload/2014_07/140725095423431.png" alt=""><br>这个是我在真服务器中测试的，支持<br>SMART support 是 Disabled 状态的话，需要开启 SMART 的支持：<br>然后使用smartctl -H /dev/sda来检测磁盘的健康状况<br>查看/dev/sda当前整体监控状态。PASSED表示健康，否则意味着磁盘已经故障，或很快就会发生故障。</p>
+<p><img src="http://www.linuxidc.com/upload/2014_07/140725095423432.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">smartctl -s on /dev/sda</div><div class="line">smartctl -H /dev/sda&lt;/code&gt;</div></pre></td></tr></table></figure>
+<p>使用</p>
+<p>smartctl -t short /dev/sda</p>
+<p>做一个快速自检</p>
+<p>smartctl -l selftest /dev/sda</p>
+<p>查看自检的进度和结果</p>
+<p>使用smartctl -t long /dev/sda 做长时间自检，这个很耗时，一般放在凌晨</p>
+<p>使用smartctl -l error /dev/sda查看出错日志</p>
+<p>在这里，我的读、写都没有发生错误，在Non-medium error count 中出现错误6。</p>
+<p>我一直没有搞懂（非媒介错误计数）这个是什么意思，在官方文档查了一下，出现如下：</p>
+<p>non-medium error counter (only a single number displayed). This represents the number of recoverable events other than write, read or verify errors.</p>
+<p>我大致理解了一下，是除了read,write,verify errors的错误，可恢复事件的数量</p>
+<p>查看所有信息<br>打印/dev/sda所有的SMART信息。<br>smartctl -a /dev/sda<br>相当于依次执行：<br>smartctl –i /dev/sda<br>smartctl -c /dev/sda<br>smartctl -A /dev/sda<br>smartctl -l error /dev/sda<br>smartctl -l selftest /dev/sda<br>smartctl -l selective /dev/sda<br>开/关SMART功能<br>打开或关闭/dev/sda 的SMART功能。<br>smartctl -s on/off /dev/sda<br>查看当前SMART功能是否开启，可以使用 –i 参数。<br>smartctl -i /dev/sda<br>离线测试<br>对/dev/sda进行离线测试，它的结果主要用来更新SMART 属性。<br>smartctl -t offline /dev/sda<br>观察测试进度<br>通过-c 参数，可以观察到测试的进度：<br>smartctl -c /dev/sda</p>
+<p>smartctl参数帮助</p>
+<p>-h 帮助信息<br>-V 版本信息<br>-i 打印基本信息（磁盘设备号、序列号、固件版本…）<br>-a 打印磁盘所有的SMART信息<br>运行时行为 参数：<br>-q TYPE 指定输出的安静模式。<br>TYPE可以有3种选择：<br>eorsonly 只打印错误日志。<br>slent 有任何打印。<br>nserial 不打印序列号<br>-d TYPE 指定磁盘的类型。如果没有指定，smartctl会根据磁盘的名字来<br>猜测磁盘类型。<br>-T TYPE 指定当发生错误时，smartctl的容忍程度，是否继续运行。<br>TYPE可以有4种选择：<br>conservative 一有错就会退出<br>normal 如果必须支持的SMART命令失败，则退出<br>permissive 忽略一次必须支持的SMART命令失败<br>verypermissive 忽略所有必须支持的SMART命令失败<br>-b TYPE 指定当发生校验错误时，smartctl的动作。<br>TYPE有3种选择：<br>warn 发出警告，继续执行<br>exit 退出smartctl<br>ignore 不发出告警，继续执行<br>-r TYPE smartmontools开发人员相关。<br>-n POWERMODE 指定当磁盘处于节能模式时，smartctl是否继续检查，<br>默认是不检查。<br>POWERMODE有4种选择：<br>never 检查<br>sleep 除了sleep模式，检查。<br>standby 除了sleep或standby模式，检查。<br>idle 除了sleep或standby或idle模式，见车。<br>SMART功能开关 参数：<br>-s on/off 打开或关闭磁盘的SMART功能<br>-o on/off 打开或关闭SMART自动离线检测，该功能每4小时就会自动扫描磁盘是<br>否有缺陷。<br>-S on/off 打开或关闭“自动保存厂商指定属性”功能。<br>SMART 读和显示数据 参数<br>-H 报告磁盘的是否健康。如果报告不健康，则说明磁盘已经损坏或会在24小时<br>内损坏。<br>-c 显示磁盘支持的普通SMART功能，以及这些功能当前的状态。<br>-A 显示磁盘支持的厂商指定SMART特性。这些特性的编号从1-253，并且有指<br>定的名字。<br>-l TYPE 指定显示的log类型。<br>TYPE有4种选择：<br>error 只显示error log。<br>selftest 只显示selftest log<br>selective 只显示selective self-test log<br>directory 只显示Log Directory<br>-v N,OPTION 显示厂商指定SMART特性N时，使用厂商相关的显示方式。<br>-F TYPE 设置smartctl的行为，当出现一些已知但还没有解决的硬件或软件bug时，<br>smartctl应该怎么做。<br>-P TYPE 设置smartctl是否对磁盘使用数据库中已有的参数。<br>SMART 离线测试、自测试 参数<br>-t TEST 立刻执行测试，可以和-C参数一起使用。<br>TEST可以有以下几个选择：<br>offline 离线测试。可以在挂载文件系统的磁盘上使用<br>short 短时间测试。可以在挂载文件系统的磁盘上使用。<br>long 长时间测试。可以在挂载文件系统的磁盘上使用。<br>conveyance [ATA only]传输zi测试。可以在挂载文件系统的磁盘上使用。<br>select, N-M<br>select, N+SIZE [ATA only]有选择性测试，测试磁盘的部分LBA。N表示<br>LBA编号，M表示结束LBA编号，SIZE表示测试的LBA<br>范围。<br>-C 在captive模式下运行测试。<br>注意：（1）-C必须配合-t一起使用，但如果是-t offline，则-C不生效。<br>（2）-C会使得磁盘很忙，所以最好是在没有挂载文件系统的磁盘上使用。<br>-X 中断no-captive模式下运行的测试</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;现代硬件驱动器一般支持SMART（自我监测分析和报告技术），它能够监视整个硬盘驱动器的健康状况，并且当硬盘驱动器即将故障的时候会发出警告。&lt;/p&gt;
+&lt;p&gt;一般硬件厂商提供的磁盘工具，是在系统重启后检查磁盘驱动的健康状况，而SMART可以不用重启系统就可以检查硬盘驱动器的健康
+    
+    </summary>
+    
+      <category term="Linux" scheme="http://192.168.8.137:4000/categories/Linux/"/>
+    
+    
+      <category term="Linux" scheme="http://192.168.8.137:4000/tags/Linux/"/>
+    
+      <category term="硬盘操作" scheme="http://192.168.8.137:4000/tags/%E7%A1%AC%E7%9B%98%E6%93%8D%E4%BD%9C/"/>
+    
+  </entry>
+  
+</feed>

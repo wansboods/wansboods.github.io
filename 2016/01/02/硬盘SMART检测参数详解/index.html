@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <title>硬盘SMART检测参数详解 | 甲子· 映像</title>
+
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <meta name="description" content="现代硬件驱动器一般支持SMART（自我监测分析和报告技术），它能够监视整个硬盘驱动器的健康状况，并且当硬盘驱动器即将故障的时候会发出警告。
+一般硬件厂商提供的磁盘工具，是在系统重启后检查磁盘驱动的健康状况，而SMART可以不用重启系统就可以检查硬盘驱动器的健康程度。
+在linux中，工具包的名字为 smartmontools
+在CentOS中可以使用 yum install smartmontoo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="硬盘SMART检测参数详解">
+<meta property="og:url" content="http://127.0.0.1:4000/2016/01/02/硬盘SMART检测参数详解/index.html">
+<meta property="og:site_name" content="甲子· 映像">
+<meta property="og:description" content="现代硬件驱动器一般支持SMART（自我监测分析和报告技术），它能够监视整个硬盘驱动器的健康状况，并且当硬盘驱动器即将故障的时候会发出警告。
+一般硬件厂商提供的磁盘工具，是在系统重启后检查磁盘驱动的健康状况，而SMART可以不用重启系统就可以检查硬盘驱动器的健康程度。
+在linux中，工具包的名字为 smartmontools
+在CentOS中可以使用 yum install smartmontoo">
+<meta property="og:image" content="http://www.linuxidc.com/upload/2014_07/140725095423431.png">
+<meta property="og:image" content="http://www.linuxidc.com/upload/2014_07/140725095423432.png">
+<meta property="og:updated_time" content="2016-09-25T03:40:07.896Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="硬盘SMART检测参数详解">
+<meta name="twitter:description" content="现代硬件驱动器一般支持SMART（自我监测分析和报告技术），它能够监视整个硬盘驱动器的健康状况，并且当硬盘驱动器即将故障的时候会发出警告。
+一般硬件厂商提供的磁盘工具，是在系统重启后检查磁盘驱动的健康状况，而SMART可以不用重启系统就可以检查硬盘驱动器的健康程度。
+在linux中，工具包的名字为 smartmontools
+在CentOS中可以使用 yum install smartmontoo">
+<meta name="twitter:image" content="http://www.linuxidc.com/upload/2014_07/140725095423431.png">
+  
+    <link rel="alternative" href="/atom.xml" title="甲子· 映像" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+    
+  <meta content="{{ title }}" name="description">
+  <meta content="{{ title }}" name="keywords">
+  <meta content="{{ title }}" name="author">
+
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|PT+Sans+Narrow|Source+Sans+Pro:200,300,400,600,700,900&amp;subset=all" rel="stylesheet" type="text/css">
+
+  <!-- Global styles START -->   
+  <link rel="stylesheet" href="/metronic/assets/plugins/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/metronic/assets/plugins/bootstrap/css/bootstrap.min.css">
+  <!-- Global styles END --> 
+   
+  <!-- Page level plugin styles START -->
+  <link rel="stylesheet" href="/metronic/assets/pages/css/animate.css">
+  <link rel="stylesheet" href="/metronic/assets/plugins/owl.carousel/assets/owl.carousel.css">
+  <!-- Page level plugin styles END -->
+
+  <!-- Theme styles START -->
+  <link rel="stylesheet" href="/metronic/assets/pages/css/components.css">
+  <link rel="stylesheet" href="/metronic/assets/pages/css/slider.css">
+  <link rel="stylesheet" href="/metronic/assets/corporate/css/style.css">
+  <link rel="stylesheet" href="/metronic/assets/pages/css/portfolio.css">
+  <link rel="stylesheet" href="/metronic/assets/corporate/css/style-responsive.css">
+  <link rel="stylesheet" href="/metronic/assets/corporate/css/themes/blue.css">
+  <link rel="stylesheet" href="/css/theme-styles.css">
+  <!-- Theme styles END -->
+</head>
+
+<body class="corporate">
+  <!-- BEGIN TOP BAR -->
+<div class="pre-header">
+  <div class="container">
+    <div class="row">
+      <!-- BEGIN TOP BAR LEFT PART -->
+      <div class="col-md-6 col-sm-6 col-xs-9 additional-shop-info">
+	<ul class="list-unstyled list-inline">
+	  <li><i class="fa fa-phone"></i><span>18503068465</span></li>
+	  <li><i class="fa fa-envelope-o"></i><span>wansboods@gmail.com</span></li>
+	</ul>
+      </div>
+      <!-- END TOP BAR LEFT PART -->
+      <!-- BEGIN TOP BAR MENU -->
+      <div class="col-md-6 col-sm-6 col-xs-3 additional-nav">
+	<ul class="list-unstyled list-inline pull-right">
+	  <!-- <li><a href="/login">login</a></li> -->
+	  <li><a href="/login"><span style="background-color:#B4009E;color:#ffffff;">&nbsp;Login&nbsp;</span></a></li>
+	</ul>
+      </div>
+      <!-- END TOP BAR MENU -->
+    </div>
+  </div>        
+</div>
+<!-- END TOP BAR -->
+<!-- BEGIN HEADER -->
+<div class="header">
+  <div class="container">
+    <!--<a class="site-logo" href="/" id="logo">甲子· 映像</a>-->
+
+    <a class="site-logo" href="/">
+      <img src="/metronic/assets/corporate/img/logos/logo-corp-blue.png" alt="Metronic FrontEnd">
+    </a>
+
+    <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
+
+    <!-- BEGIN NAVIGATION -->
+    <div class="header-navigation pull-right font-transform-inherit">
+      <ul>
+	
+	<li class="">
+	  <a  href="/">首页</a>
+	</li>
+	
+	<li class="">
+	  <a  href="/projects/">项目</a>
+	</li>
+	
+	<li class="">
+	  <a  href="/archives/">博客</a>
+	</li>
+	
+	<li class="">
+	  <a  href="/contact/">位置</a>
+	</li>
+	
+	<li class="">
+	  <a  href="/about/">关于</a>
+	</li>
+	
+	<!-- BEGIN TOP SEARCH -->
+	<li class="menu-search">
+	  <span class="sep"></span>
+	  <i class="fa fa-search search-btn"></i>
+	  <div class="search-box">
+	    <form action="#">
+	      <div class="input-group">
+		<input type="text" placeholder="Search" class="form-control st-default-search-input">
+		<span class="input-group-btn">
+		  <button class="btn btn-primary" type="submit">Search</button>
+		</span>
+	      </div>
+	    </form>
+	  </div> 
+	</li>
+	<!-- END TOP SEARCH -->
+      </ul>
+    </div>
+    <!-- END NAVIGATION -->
+  </div>
+</div>
+<!-- Header END -->
+
+  <div class="container">
+  <ul class="breadcrumb">
+    <li><a href="/">首页</a></li>
+    <!-- 
+        <li><a href="undefined">博客</a></li>
+    -->
+     <li><a href="/archives/">博客</a></li>
+    <li class="active">post</li>
+  </ul>
+  <section id="main">
+    
+    <h2 itemprop="name">
+      <a class="article-title" href="/2016/01/02/硬盘SMART检测参数详解/">硬盘SMART检测参数详解</a>
+    </h2>
+
+
+    <div class="row">
+<div class="col-md-9 col-sm-9 blog-posts">
+<article id="post-硬盘SMART检测参数详解" class="article article-type-post blog-item" itemscope itemprop="blogPost">
+  <div class="article-meta">
+  </div>
+  <div class="article-inner">
+    
+    
+    <header class="article-header">
+      <ul class="blog-info">
+	<li><i class="fa fa-user"></i> Anonymous</li>
+	<li><i class="fa fa-calendar"></i>
+	  <time datetime="2016-01-01T16:00:00.000Z" itemprop="datePublished">2016/01/02</time>
+
+	</li>
+	<li class="hidden-xs"><i class="fa fa-comments"></i>
+	  <a href="http://127.0.0.1:4000/2016/01/02/硬盘SMART检测参数详解/#disqus_thread" class="article-comment-link">Comments</a>
+	</li>
+	<li class="hidden-xs"><i class="fa fa-tags"></i> 
+	  
+  
+    <a href="/tags/Linux/" title="Linux">Linux</a>,
+  
+    <a href="/tags/硬盘操作/" title="硬盘操作">硬盘操作</a>
+  
+
+
+	</li>
+      </ul>
+      
+  <div class="article-category">
+    
+    Category: 
+    
+    Categories:
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+  <br>
+
+
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>现代硬件驱动器一般支持SMART（自我监测分析和报告技术），它能够监视整个硬盘驱动器的健康状况，并且当硬盘驱动器即将故障的时候会发出警告。</p>
+<p>一般硬件厂商提供的磁盘工具，是在系统重启后检查磁盘驱动的健康状况，而SMART可以不用重启系统就可以检查硬盘驱动器的健康程度。</p>
+<p>在linux中，工具包的名字为 <strong>smartmontools</strong></p>
+<p>在CentOS中可以使用 yum install smartmontools来安装工具<br>首先通过smartctl -i /dev/sda 来检查一下硬盘是否具有 SMART 特性</p>
+<p>下面是smart工具的说明文档，里面有<a href="https://www.smartmontools.org/" target="_blank" rel="external">详细的说明</a></p>
+<p>这个是我在虚拟机中测试的不支持<br><img src="http://www.linuxidc.com/upload/2014_07/140725095423431.png" alt=""><br>这个是我在真服务器中测试的，支持<br>SMART support 是 Disabled 状态的话，需要开启 SMART 的支持：<br>然后使用smartctl -H /dev/sda来检测磁盘的健康状况<br>查看/dev/sda当前整体监控状态。PASSED表示健康，否则意味着磁盘已经故障，或很快就会发生故障。</p>
+<p><img src="http://www.linuxidc.com/upload/2014_07/140725095423432.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">smartctl -s on /dev/sda</div><div class="line">smartctl -H /dev/sda&lt;/code&gt;</div></pre></td></tr></table></figure>
+<p>使用</p>
+<p>smartctl -t short /dev/sda</p>
+<p>做一个快速自检</p>
+<p>smartctl -l selftest /dev/sda</p>
+<p>查看自检的进度和结果</p>
+<p>使用smartctl -t long /dev/sda 做长时间自检，这个很耗时，一般放在凌晨</p>
+<p>使用smartctl -l error /dev/sda查看出错日志</p>
+<p>在这里，我的读、写都没有发生错误，在Non-medium error count 中出现错误6。</p>
+<p>我一直没有搞懂（非媒介错误计数）这个是什么意思，在官方文档查了一下，出现如下：</p>
+<p>non-medium error counter (only a single number displayed). This represents the number of recoverable events other than write, read or verify errors.</p>
+<p>我大致理解了一下，是除了read,write,verify errors的错误，可恢复事件的数量</p>
+<p>查看所有信息<br>打印/dev/sda所有的SMART信息。<br>smartctl -a /dev/sda<br>相当于依次执行：<br>smartctl –i /dev/sda<br>smartctl -c /dev/sda<br>smartctl -A /dev/sda<br>smartctl -l error /dev/sda<br>smartctl -l selftest /dev/sda<br>smartctl -l selective /dev/sda<br>开/关SMART功能<br>打开或关闭/dev/sda 的SMART功能。<br>smartctl -s on/off /dev/sda<br>查看当前SMART功能是否开启，可以使用 –i 参数。<br>smartctl -i /dev/sda<br>离线测试<br>对/dev/sda进行离线测试，它的结果主要用来更新SMART 属性。<br>smartctl -t offline /dev/sda<br>观察测试进度<br>通过-c 参数，可以观察到测试的进度：<br>smartctl -c /dev/sda</p>
+<p>smartctl参数帮助</p>
+<p>-h 帮助信息<br>-V 版本信息<br>-i 打印基本信息（磁盘设备号、序列号、固件版本…）<br>-a 打印磁盘所有的SMART信息<br>运行时行为 参数：<br>-q TYPE 指定输出的安静模式。<br>TYPE可以有3种选择：<br>eorsonly 只打印错误日志。<br>slent 有任何打印。<br>nserial 不打印序列号<br>-d TYPE 指定磁盘的类型。如果没有指定，smartctl会根据磁盘的名字来<br>猜测磁盘类型。<br>-T TYPE 指定当发生错误时，smartctl的容忍程度，是否继续运行。<br>TYPE可以有4种选择：<br>conservative 一有错就会退出<br>normal 如果必须支持的SMART命令失败，则退出<br>permissive 忽略一次必须支持的SMART命令失败<br>verypermissive 忽略所有必须支持的SMART命令失败<br>-b TYPE 指定当发生校验错误时，smartctl的动作。<br>TYPE有3种选择：<br>warn 发出警告，继续执行<br>exit 退出smartctl<br>ignore 不发出告警，继续执行<br>-r TYPE smartmontools开发人员相关。<br>-n POWERMODE 指定当磁盘处于节能模式时，smartctl是否继续检查，<br>默认是不检查。<br>POWERMODE有4种选择：<br>never 检查<br>sleep 除了sleep模式，检查。<br>standby 除了sleep或standby模式，检查。<br>idle 除了sleep或standby或idle模式，见车。<br>SMART功能开关 参数：<br>-s on/off 打开或关闭磁盘的SMART功能<br>-o on/off 打开或关闭SMART自动离线检测，该功能每4小时就会自动扫描磁盘是<br>否有缺陷。<br>-S on/off 打开或关闭“自动保存厂商指定属性”功能。<br>SMART 读和显示数据 参数<br>-H 报告磁盘的是否健康。如果报告不健康，则说明磁盘已经损坏或会在24小时<br>内损坏。<br>-c 显示磁盘支持的普通SMART功能，以及这些功能当前的状态。<br>-A 显示磁盘支持的厂商指定SMART特性。这些特性的编号从1-253，并且有指<br>定的名字。<br>-l TYPE 指定显示的log类型。<br>TYPE有4种选择：<br>error 只显示error log。<br>selftest 只显示selftest log<br>selective 只显示selective self-test log<br>directory 只显示Log Directory<br>-v N,OPTION 显示厂商指定SMART特性N时，使用厂商相关的显示方式。<br>-F TYPE 设置smartctl的行为，当出现一些已知但还没有解决的硬件或软件bug时，<br>smartctl应该怎么做。<br>-P TYPE 设置smartctl是否对磁盘使用数据库中已有的参数。<br>SMART 离线测试、自测试 参数<br>-t TEST 立刻执行测试，可以和-C参数一起使用。<br>TEST可以有以下几个选择：<br>offline 离线测试。可以在挂载文件系统的磁盘上使用<br>short 短时间测试。可以在挂载文件系统的磁盘上使用。<br>long 长时间测试。可以在挂载文件系统的磁盘上使用。<br>conveyance [ATA only]传输zi测试。可以在挂载文件系统的磁盘上使用。<br>select, N-M<br>select, N+SIZE [ATA only]有选择性测试，测试磁盘的部分LBA。N表示<br>LBA编号，M表示结束LBA编号，SIZE表示测试的LBA<br>范围。<br>-C 在captive模式下运行测试。<br>注意：（1）-C必须配合-t一起使用，但如果是-t offline，则-C不生效。<br>（2）-C会使得磁盘很忙，所以最好是在没有挂载文件系统的磁盘上使用。<br>-X 中断no-captive模式下运行的测试</p>
+
+      
+    </div>
+  </div>
+  
+    
+  
+  <br>
+</article>
+
+
+
+
+</div>
+<div class="col-md-3 col-sm-3 blog-sidebar">
+  <!-- CATEGORIES START -->
+<h2 class="no-top-space">Categories</h2>
+
+<div class="widget-wrap">
+  <div class="widget">
+    <ul class="nav sidebar-categories margin-bottom-40">
+      
+	<li>
+	  <a href="/categories/Hexo/">Hexo (0)</a>
+	</li>
+      
+	<li>
+	  <a href="/categories/NGINX/">NGINX (0)</a>
+	</li>
+      
+	<li>
+	  <a href="/categories/NET/">.NET (0)</a>
+	</li>
+      
+	<li>
+	  <a href="/categories/Dynamics-NAV/">Dynamics NAV (0)</a>
+	</li>
+      
+	<li>
+	  <a href="/categories/Humor/">Humor (0)</a>
+	</li>
+      
+	<li>
+	  <a href="/categories/Linux/">Linux (1)</a>
+	</li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<!-- CATEGORIES END -->
+
+<!-- BEGIN BLOG TAGS -->
+<div class="blog-tags margin-bottom-20">
+  <h2>Tags</h2>
+  
+  <div class="widget-wrap">
+    <div class="widget">
+      
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/"><i class='fa fa-tags'></i>Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/硬盘操作/"><i class='fa fa-tags'></i>硬盘操作</a></li></ul>
+    </div>
+  </div>
+
+
+</div>
+<!-- END BLOG TAGS -->
+
+
+<!-- BEGIN FEATURED POSTS -->                            
+<h2>Featured Posts</h2>
+<div class="recent-news margin-bottom-10">
+  
+    
+  
+</div>
+<!-- END FEATURED POSTS -->                            
+
+</div>
+</div>
+
+  </section>
+</div>
+
+    <!-- BEGIN PRE-FOOTER -->
+    <div class="pre-footer">
+      <div class="container">
+        <div class="row">
+          <!-- BEGIN BOTTOM ABOUT BLOCK -->
+          <div class="col-md-4 col-sm-6 pre-footer-col">
+            <h2>寄语</h2>
+            <p>所有的终结是新的开始.<br>すべての終(お)わりは新(あら)たなる始(はじ)まりである</p>
+          </div>
+          <!-- END BOTTOM ABOUT BLOCK -->
+
+          <!-- BEGIN BOTTOM CONTACTS -->
+          <div class="col-md-4 col-sm-6 pre-footer-col">
+            <h2>位置</h2>
+            <address class="margin-bottom-40">
+              湖南长沙市<br>
+              岳麓区<br>
+              梅溪湖 金茂<br>
+              Phone: 18503068465<br>
+              Email: <a href="mailto:wansboods@gmail.com">wansboods@gmail.com</a><br>
+            </address>
+          </div>
+          <!-- END BOTTOM CONTACTS -->
+
+	
+          <!-- BEGIN TWITTER BLOCK --> 
+          <div class="col-md-4 col-sm-6 pre-footer-col">
+
+	  <a data-tweet-limit="1" class="twitter-timeline"
+	  href="https://twitter.com/computerlab_"
+	  data-widget-id="678830341331820544">Tweets by @computerlab_</a>
+
+	  <script>!function(d,s,id){var
+	  js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+          </div>
+          <!-- END TWITTER BLOCK -->
+	
+        </div>
+      </div>
+    </div>
+    <!-- END PRE-FOOTER -->
+
+    <!-- BEGIN FOOTER -->
+    <div class="footer">
+      <div class="container">
+        <div class="row">
+          <!-- BEGIN COPYRIGHT -->
+          <div class="col-md-6 col-sm-6 padding-top-10">
+                  &copy; 2016 甲子· 映像<br>
+ <a href="javascript:;">Privacy Policy</a> | <a href="javascript:;">Terms of Service</a>
+          </div>
+          <!-- END COPYRIGHT -->
+	  <!-- BEGIN SOCIAL -->
+<div class="col-md-6 col-sm-6">
+  <ul class="social-footer list-unstyled list-inline pull-right">
+    
+      <li><a href="https://github.com/wansboods"><i class="fa fa-github"></i></a></li>
+    
+      <li><a href="/"><i class="fa fa-twitter"></i></a></li>
+    
+      <li><a href="https://www.facebook.com/wansboods"><i class="fa fa-facebook"></i></a></li>
+    
+      <li><a href="/atom.xml"><i class="fa fa-rss"></i></a></li>
+    
+      <li><a href="https://linkedin.com/in/ptsteadman"><i class="fa fa-linkedin"></i></a></li>
+    
+      <li><a href="http://stackoverflow.com/users/6825833/sean-wan"><i class="fa fa-stackoverflow"></i></a></li>
+    
+  </ul>  
+</div>
+<!-- END SOCIAL -->
+
+        </div>
+      </div>
+    </div>
+    <!-- END FOOTER -->
+
+  <!-- BEGIN CORE PLUGINS (REQUIRED FOR ALL PAGES) -->
+<!--[if lt IE 9]>
+<script src="/metronic/assets/plugins/respond.min.js"></script>
+<![endif]--> 
+<script src="/metronic/assets/plugins/jquery.min.js"></script>
+<script src="/metronic/assets/plugins/jquery-migrate.min.js"></script>
+<script src="/metronic/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="/metronic/assets/corporate/scripts/back-to-top.js"></script>
+<script src="/metronic/assets/plugins/owl.carousel/owl.carousel.min.js"></script>
+<script src="/metronic/assets/corporate/scripts/layout.js"></script>
+<script src="/js/wow.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        Layout.init();    
+        Layout.initOWL();
+        Layout.initTwitter();
+        Layout.initFixHeaderWithPreHeader(); /* Switch On Header Fixing (only if you have pre-header) */
+        Layout.initNavScrolling(); 
+	new WOW().init();
+    });
+</script>
+<!-- END CORE PLUGINS -->
+
+<!-- BEGIN PAGE-SPECIFIC PLUGINS --> 
+
+
+
+
+
+
+
+<!-- END PAGE-SPECIFIC PLUGINS --> 
+
+<!-- BEGIN INTEGRATIONS -->
+
+
+
+
+
+<!-- END INTEGRATIONS -->
+
+</body>
+</html>

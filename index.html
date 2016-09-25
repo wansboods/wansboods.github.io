@@ -15,7 +15,7 @@
   <meta name="description" content="個人博客">
 <meta property="og:type" content="website">
 <meta property="og:title" content="甲子· 映像">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://192.168.8.137:4000/index.html">
 <meta property="og:site_name" content="甲子· 映像">
 <meta property="og:description" content="個人博客">
 <meta name="twitter:card" content="summary">
@@ -50,7 +50,7 @@
   <link rel="stylesheet" href="/metronic/assets/corporate/css/style.css">
   <link rel="stylesheet" href="/metronic/assets/pages/css/portfolio.css">
   <link rel="stylesheet" href="/metronic/assets/corporate/css/style-responsive.css">
-  <link rel="stylesheet" href="/metronic/assets/corporate/css/themes/red.css">
+  <link rel="stylesheet" href="/metronic/assets/corporate/css/themes/blue.css">
   <link rel="stylesheet" href="/css/theme-styles.css">
   <!-- Theme styles END -->
 </head>
@@ -71,7 +71,8 @@
       <!-- BEGIN TOP BAR MENU -->
       <div class="col-md-6 col-sm-6 col-xs-3 additional-nav">
 	<ul class="list-unstyled list-inline pull-right">
-	  <li><a href="/login">Log In</a></li>
+	  <!-- <li><a href="/login">login</a></li> -->
+	  <li><a href="/login"><span style="background-color:#B4009E;color:#ffffff;">&nbsp;Login&nbsp;</span></a></li>
 	</ul>
       </div>
       <!-- END TOP BAR MENU -->
@@ -85,7 +86,7 @@
     <!--<a class="site-logo" href="/" id="logo">甲子· 映像</a>-->
 
     <a class="site-logo" href="/">
-      <img src="/metronic/assets/corporate/img/logos/logo-corp-red.png" alt="Metronic FrontEnd">
+      <img src="/metronic/assets/corporate/img/logos/logo-corp-blue.png" alt="Metronic FrontEnd">
     </a>
 
     <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
@@ -95,23 +96,23 @@
       <ul>
 	
 	<li class="active">
-	  <a  href="/">Home</a>
+	  <a  href="/">首页</a>
 	</li>
 	
 	<li class="">
-	  <a  href="/projects/">Projects</a>
+	  <a  href="/projects/">项目</a>
 	</li>
 	
 	<li class="">
-	  <a  href="/archives/">Blog</a>
+	  <a  href="/archives/">博客</a>
 	</li>
 	
 	<li class="">
-	  <a  href="/contact/">Contact</a>
+	  <a  href="/contact/">位置</a>
 	</li>
 	
 	<li class="">
-	  <a  href="/about/">About</a>
+	  <a  href="/about/">关于</a>
 	</li>
 	
 	<!-- BEGIN TOP SEARCH -->
@@ -140,7 +141,7 @@
   
   <div class="container">
     <ul class="breadcrumb">
-      <li class="active">Home</li>
+      <li class="active"><h1>Home</h1></li>
     </ul>
   <div id="main">
     <div class="row">
@@ -154,57 +155,7 @@
 	<div class="row">
   <div class="col-md-4 col-sm-4">
     
-  </div>
-  
-    <div class="col-xs-12">
-  
-    
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/2016/09/13/hello-world/">Hello World</a>
-    </h2>
-
-
-    <ul class="blog-info">
-      <li>
-      	<i class="fa fa-calendar"></i> 
-        <time datetime="2016-09-13T07:29:32.722Z" itemprop="datePublished">2016/09/13</time>
-
-      </li>
-      <li><i class="fa fa-comments"></i>
-        <a href="http://yoursite.com/2016/09/13/hello-world/#disqus_thread" class="article-comment-link">Comments</a>
-      </li>
-      <li>
-	<i class="fa fa-tags"></i>
-	
-
-      </li>
-    </ul>
-    <div class="blog-item">
-      
-	<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-    </div>
-    <br>
-    <br>
-    <a href="http://yoursite.com/2016/09/13/hello-world/" class="more">Read more <i class="icon-angle-right"></i></a>
-  </div>
-</div>
-<hr class="blog-post-sep">
-
-      
-	<div class="row">
-  <div class="col-md-4 col-sm-4">
-    
-      <img src="https://s3.amazonaws.com/ptsteadman-images/hexo.png" class="img-responsive">
+      <img src="http://www.linuxidc.com/upload/2014_07/140725095423434.png" class="img-responsive">
     
   </div>
   
@@ -212,7 +163,7 @@
   
     
     <h2 itemprop="name">
-      <a class="archive-article-title" href="/2016/01/02/2016-01-02-Notes-On-Creating-A-Hexo-Theme/">Notes On Creating A Hexo Theme</a>
+      <a class="archive-article-title" href="/2016/01/02/硬盘SMART检测参数详解/">硬盘SMART检测参数详解</a>
     </h2>
 
 
@@ -223,15 +174,15 @@
 
       </li>
       <li><i class="fa fa-comments"></i>
-        <a href="http://yoursite.com/2016/01/02/2016-01-02-Notes-On-Creating-A-Hexo-Theme/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="http://192.168.8.137:4000/2016/01/02/硬盘SMART检测参数详解/#disqus_thread" class="article-comment-link">Comments</a>
       </li>
       <li>
 	<i class="fa fa-tags"></i>
 	
   
-    <a href="/tags/Programming/" title="Programming">Programming</a>,
+    <a href="/tags/Linux/" title="Linux">Linux</a>,
   
-    <a href="/tags/Design/" title="Design">Design</a>
+    <a href="/tags/硬盘操作/" title="硬盘操作">硬盘操作</a>
   
 
 
@@ -239,304 +190,12 @@
     </ul>
     <div class="blog-item">
       
-	Information about developing a Hexo theme, including common gotchas that we ran into.  This posts covers setting up a hexo development environment, and the seperation of theme and content.
+	在服务器中，所有组件中一般最容易坏掉的就是磁盘。所以一般采取RAID来保证系统的稳定性，通过冗余磁盘的方式防止磁盘故障。
       
     </div>
     <br>
     <br>
-    <a href="http://yoursite.com/2016/01/02/2016-01-02-Notes-On-Creating-A-Hexo-Theme/" class="more">Read more <i class="icon-angle-right"></i></a>
-  </div>
-</div>
-<hr class="blog-post-sep">
-
-      
-	<div class="row">
-  <div class="col-md-4 col-sm-4">
-    
-      <img src="https://s3.amazonaws.com/ptsteadman-images/info2.jpg" class="img-responsive">
-    
-  </div>
-  
-    <div class="col-md-8 col-sm-8">
-  
-    
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/2015/05/02/2015-05-02-How-To-Impress/">How To Impress Employers at Infosessions</a>
-    </h2>
-
-
-    <ul class="blog-info">
-      <li>
-      	<i class="fa fa-calendar"></i> 
-        <time datetime="2015-05-01T16:00:00.000Z" itemprop="datePublished">2015/05/02</time>
-
-      </li>
-      <li><i class="fa fa-comments"></i>
-        <a href="http://yoursite.com/2015/05/02/2015-05-02-How-To-Impress/#disqus_thread" class="article-comment-link">Comments</a>
-      </li>
-      <li>
-	<i class="fa fa-tags"></i>
-	
-  
-    <a href="/tags/funny/" title="funny">funny</a>,
-  
-    <a href="/tags/employment/" title="employment">employment</a>
-  
-
-
-      </li>
-    </ul>
-    <div class="blog-item">
-      
-	Top tech talent knows that industry recruiters often bring a stack of pre-negotiated offers to university infosessions, so that they can snag programmers and UX designers who really stand out.
-      
-    </div>
-    <br>
-    <br>
-    <a href="http://yoursite.com/2015/05/02/2015-05-02-How-To-Impress/" class="more">Read more <i class="icon-angle-right"></i></a>
-  </div>
-</div>
-<hr class="blog-post-sep">
-
-      
-	<div class="row">
-  <div class="col-md-4 col-sm-4">
-    
-      <img src="https://s3.amazonaws.com/ptsteadman-images/NAV.jpg" class="img-responsive">
-    
-  </div>
-  
-    <div class="col-md-8 col-sm-8">
-  
-    
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/2015/04/08/2015-04-08-NAV-Programming-Resources/">NAV Web Service Programming Resources</a>
-    </h2>
-
-
-    <ul class="blog-info">
-      <li>
-      	<i class="fa fa-calendar"></i> 
-        <time datetime="2015-04-07T16:00:00.000Z" itemprop="datePublished">2015/04/08</time>
-
-      </li>
-      <li><i class="fa fa-comments"></i>
-        <a href="http://yoursite.com/2015/04/08/2015-04-08-NAV-Programming-Resources/#disqus_thread" class="article-comment-link">Comments</a>
-      </li>
-      <li>
-	<i class="fa fa-tags"></i>
-	
-  
-    <a href="/tags/Resources/" title="Resources">Resources</a>,
-  
-    <a href="/tags/NAV/" title="NAV">NAV</a>
-  
-
-
-      </li>
-    </ul>
-    <div class="blog-item">
-      
-	Here are some of the resources I found helpful for learning to develop Dynamics NAV web service based applications.
-      
-    </div>
-    <br>
-    <br>
-    <a href="http://yoursite.com/2015/04/08/2015-04-08-NAV-Programming-Resources/" class="more">Read more <i class="icon-angle-right"></i></a>
-  </div>
-</div>
-<hr class="blog-post-sep">
-
-      
-	<div class="row">
-  <div class="col-md-4 col-sm-4">
-    
-      <img src="https://s3.amazonaws.com/ptsteadman-images/lookup.jpg" class="img-responsive">
-    
-  </div>
-  
-    <div class="col-md-8 col-sm-8">
-  
-    
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/2015/04/05/2015-04-05-Lookup-on-Page/">Adding Lookup Field to a Page in Dynamics NAV</a>
-    </h2>
-
-
-    <ul class="blog-info">
-      <li>
-      	<i class="fa fa-calendar"></i> 
-        <time datetime="2015-04-04T16:00:00.000Z" itemprop="datePublished">2015/04/05</time>
-
-      </li>
-      <li><i class="fa fa-comments"></i>
-        <a href="http://yoursite.com/2015/04/05/2015-04-05-Lookup-on-Page/#disqus_thread" class="article-comment-link">Comments</a>
-      </li>
-      <li>
-	<i class="fa fa-tags"></i>
-	
-  
-    <a href="/tags/Resources/" title="Resources">Resources</a>,
-  
-    <a href="/tags/NAV/" title="NAV">NAV</a>
-  
-
-
-      </li>
-    </ul>
-    <div class="blog-item">
-      
-	One of the problems I faced in building a non-trivial application that consumed NAV Web Services was figuring out how to join fields from different tables.
-      
-    </div>
-    <br>
-    <br>
-    <a href="http://yoursite.com/2015/04/05/2015-04-05-Lookup-on-Page/" class="more">Read more <i class="icon-angle-right"></i></a>
-  </div>
-</div>
-<hr class="blog-post-sep">
-
-      
-	<div class="row">
-  <div class="col-md-4 col-sm-4">
-    
-      <img src="https://s3.amazonaws.com/ptsteadman-images/nginx-proxy.png" class="img-responsive">
-    
-  </div>
-  
-    <div class="col-md-8 col-sm-8">
-  
-    
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/2015/04/01/2015-04-01-NGINX-Static-Locations/">Static NGINX Locations</a>
-    </h2>
-
-
-    <ul class="blog-info">
-      <li>
-      	<i class="fa fa-calendar"></i> 
-        <time datetime="2015-03-31T16:00:00.000Z" itemprop="datePublished">2015/04/01</time>
-
-      </li>
-      <li><i class="fa fa-comments"></i>
-        <a href="http://yoursite.com/2015/04/01/2015-04-01-NGINX-Static-Locations/#disqus_thread" class="article-comment-link">Comments</a>
-      </li>
-      <li>
-	<i class="fa fa-tags"></i>
-	
-  
-    <a href="/tags/Web-Development/" title="Web Development">Web Development</a>
-  
-
-
-      </li>
-    </ul>
-    <div class="blog-item">
-      
-	Everytime I finish a project, I have to relearn how to add new 'locations' (paths) to the NGINX virtual host.
-      
-    </div>
-    <br>
-    <br>
-    <a href="http://yoursite.com/2015/04/01/2015-04-01-NGINX-Static-Locations/" class="more">Read more <i class="icon-angle-right"></i></a>
-  </div>
-</div>
-<hr class="blog-post-sep">
-
-      
-	<div class="row">
-  <div class="col-md-4 col-sm-4">
-    
-      <img src="https://s3.amazonaws.com/ptsteadman-images/vs.jpg" class="img-responsive">
-    
-  </div>
-  
-    <div class="col-md-8 col-sm-8">
-  
-    
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/2015/03/23/2015-03-23-Make-VS-Insert-Spaces/">Spaces for Newline Indents in VS</a>
-    </h2>
-
-
-    <ul class="blog-info">
-      <li>
-      	<i class="fa fa-calendar"></i> 
-        <time datetime="2015-03-22T16:00:00.000Z" itemprop="datePublished">2015/03/23</time>
-
-      </li>
-      <li><i class="fa fa-comments"></i>
-        <a href="http://yoursite.com/2015/03/23/2015-03-23-Make-VS-Insert-Spaces/#disqus_thread" class="article-comment-link">Comments</a>
-      </li>
-      <li>
-	<i class="fa fa-tags"></i>
-	
-  
-    <a href="/tags/C/" title="C#">C#</a>,
-  
-    <a href="/tags/Visual-Studio/" title="Visual Studio">Visual Studio</a>
-  
-
-
-      </li>
-    </ul>
-    <div class="blog-item">
-      
-	Visual Studio displays tabs as having the same  width as four spaces.  But if you're collaborating with someone working  in another text editor like vim, your automatically-inserted tabs will appear larger than four spaces.
-      
-    </div>
-    <br>
-    <br>
-    <a href="http://yoursite.com/2015/03/23/2015-03-23-Make-VS-Insert-Spaces/" class="more">Read more <i class="icon-angle-right"></i></a>
-  </div>
-</div>
-<hr class="blog-post-sep">
-
-      
-	<div class="row">
-  <div class="col-md-4 col-sm-4">
-    
-      <img src="https://s3.amazonaws.com/ptsteadman-images/helloworld.jpg" class="img-responsive">
-    
-  </div>
-  
-    <div class="col-md-8 col-sm-8">
-  
-    
-    <h2 itemprop="name">
-      <a class="archive-article-title" href="/2014/02/23/2014-02-23-hello-world/">Welcome To Hexo</a>
-    </h2>
-
-
-    <ul class="blog-info">
-      <li>
-      	<i class="fa fa-calendar"></i> 
-        <time datetime="2014-02-22T16:00:00.000Z" itemprop="datePublished">2014/02/23</time>
-
-      </li>
-      <li><i class="fa fa-comments"></i>
-        <a href="http://yoursite.com/2014/02/23/2014-02-23-hello-world/#disqus_thread" class="article-comment-link">Comments</a>
-      </li>
-      <li>
-	<i class="fa fa-tags"></i>
-	
-  
-    <a href="/tags/Welcome/" title="Welcome">Welcome</a>,
-  
-    <a href="/tags/How-To/" title="How-To">How-To</a>
-  
-
-
-      </li>
-    </ul>
-    <div class="blog-item">
-      
-	Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on github.
-      
-    </div>
-    <br>
-    <br>
-    <a href="http://yoursite.com/2014/02/23/2014-02-23-hello-world/" class="more">Read more <i class="icon-angle-right"></i></a>
+    <a href="http://192.168.8.137:4000/2016/01/02/硬盘SMART检测参数详解/" class="more">更多..<i class="icon-angle-right"></i></a>
   </div>
 </div>
 <hr class="blog-post-sep">
@@ -565,14 +224,14 @@
         <div class="row">
           <!-- BEGIN BOTTOM ABOUT BLOCK -->
           <div class="col-md-4 col-sm-6 pre-footer-col">
-            <h2>About Us</h2>
-            <p>願每一天都是幸運幸福的. <br><br> 願世界和平富饒.</p>
+            <h2>寄语</h2>
+            <p>所有的终结是新的开始.<br>すべての終(お)わりは新(あら)たなる始(はじ)まりである</p>
           </div>
           <!-- END BOTTOM ABOUT BLOCK -->
 
           <!-- BEGIN BOTTOM CONTACTS -->
           <div class="col-md-4 col-sm-6 pre-footer-col">
-            <h2>Contact</h2>
+            <h2>位置</h2>
             <address class="margin-bottom-40">
               湖南长沙市<br>
               岳麓区<br>
