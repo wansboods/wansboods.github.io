@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://127.0.0.1:4000/"/>
-  <updated>2016-09-25T08:15:41.432Z</updated>
+  <updated>2016-09-25T08:25:28.816Z</updated>
   <id>http://127.0.0.1:4000/</id>
   
   <author>
@@ -20,14 +20,116 @@
     <link href="http://127.0.0.1:4000/2016/09/25/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E4%B9%8Bepoll%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/"/>
     <id>http://127.0.0.1:4000/2016/09/25/IO多路复用之epoll网络编程/</id>
     <published>2016-09-24T16:00:00.000Z</published>
-    <updated>2016-09-25T08:15:41.432Z</updated>
+    <updated>2016-09-25T08:25:28.816Z</updated>
     
     <content type="html"><![CDATA[<h2 id="服务端代码"><a href="#服务端代码" class="headerlink" title="服务端代码"></a><strong>服务端代码</strong></h2><blockquote>
 <p>epoll_server.c</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div></pre></td><td class="code"><pre><div class="line">#include  &lt;unistd.h&gt;</div><div class="line">#include  &lt;sys/types.h&gt;       /* basic system data types */</div><div class="line">#include  &lt;sys/socket.h&gt;      /* basic socket definitions */</div><div class="line">#include  &lt;netinet/in.h&gt;      /* sockaddr_in&#123;&#125; and other Internet defns */</div><div class="line">#include  &lt;arpa/inet.h&gt;       /* inet(3) functions */</div><div class="line">#include &lt;sys/epoll.h&gt; /* epoll function */</div><div class="line">#include &lt;fcntl.h&gt;     /* nonblocking */</div><div class="line">#include &lt;sys/resource.h&gt; /*setrlimit */</div><div class="line"></div><div class="line">#include &lt;stdlib.h&gt;</div><div class="line">#include &lt;errno.h&gt;</div><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;string.h&gt;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">#define MAXEPOLLSIZE 10000</div><div class="line">#define MAXLINE 10240</div><div class="line">int handle(int connfd);</div><div class="line">int setnonblocking(int sockfd)</div><div class="line">&#123;</div><div class="line">    if (fcntl(sockfd, F_SETFL, fcntl(sockfd, F_GETFD, 0)|O_NONBLOCK) == -1) &#123;</div><div class="line">        return -1;</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main(int argc, char **argv)</div><div class="line">&#123;</div><div class="line">    int  servPort = 6888;</div><div class="line">    int listenq = 1024;</div><div class="line"></div><div class="line">    int listenfd, connfd, kdpfd, nfds, n, nread, curfds,acceptCount = 0;</div><div class="line">    struct sockaddr_in servaddr, cliaddr;</div><div class="line">    socklen_t socklen = sizeof(struct sockaddr_in);</div><div class="line">    struct epoll_event ev;</div><div class="line">    struct epoll_event events[MAXEPOLLSIZE];</div><div class="line">    struct rlimit rt;</div><div class="line">    char buf[MAXLINE];</div><div class="line"></div><div class="line">    /* 设置每个进程允许打开的最大文件数 */</div><div class="line">    rt.rlim_max = rt.rlim_cur = MAXEPOLLSIZE;</div><div class="line">    if (setrlimit(RLIMIT_NOFILE, &amp;rt) == -1) </div><div class="line">    &#123;</div><div class="line">        perror(&quot;setrlimit error&quot;);</div><div class="line">        return -1;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    bzero(&amp;servaddr, sizeof(servaddr));</div><div class="line">    servaddr.sin_family = AF_INET; </div><div class="line">    servaddr.sin_addr.s_addr = htonl (INADDR_ANY);</div><div class="line">    servaddr.sin_port = htons (servPort);</div><div class="line"></div><div class="line">    listenfd = socket(AF_INET, SOCK_STREAM, 0); </div><div class="line">    if (listenfd == -1) &#123;</div><div class="line">        perror(&quot;can&apos;t create socket file&quot;);</div><div class="line">        return -1;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    int opt = 1;</div><div class="line">    setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &amp;opt, sizeof(opt));</div><div class="line"></div><div class="line">    if (setnonblocking(listenfd) &lt; 0) &#123;</div><div class="line">        perror(&quot;setnonblock error&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    if (bind(listenfd, (struct sockaddr *) &amp;servaddr, sizeof(struct sockaddr)) == -1) </div><div class="line">    &#123;</div><div class="line">        perror(&quot;bind error&quot;);</div><div class="line">        return -1;</div><div class="line">    &#125; </div><div class="line">    if (listen(listenfd, listenq) == -1) </div><div class="line">    &#123;</div><div class="line">        perror(&quot;listen error&quot;);</div><div class="line">        return -1;</div><div class="line">    &#125;</div><div class="line">    /* 创建 epoll 句柄，把监听 socket 加入到 epoll 集合里 */</div><div class="line">    kdpfd = epoll_create(MAXEPOLLSIZE);</div><div class="line">    ev.events = EPOLLIN | EPOLLET;</div><div class="line">    ev.data.fd = listenfd;</div><div class="line">    if (epoll_ctl(kdpfd, EPOLL_CTL_ADD, listenfd, &amp;ev) &lt; 0) </div><div class="line">    &#123;</div><div class="line">        fprintf(stderr, &quot;epoll set insertion error: fd=%d\n&quot;, listenfd);</div><div class="line">        return -1;</div><div class="line">    &#125;</div><div class="line">    curfds = 1;</div><div class="line"></div><div class="line">    printf(&quot;epollserver startup,port %d, max connection is %d, backlog is %d\n&quot;, servPort, MAXEPOLLSIZE, listenq);</div><div class="line"></div><div class="line">    for (;;) &#123;</div><div class="line">        /* 等待有事件发生 */</div><div class="line">        nfds = epoll_wait(kdpfd, events, curfds, -1);</div><div class="line">        if (nfds == -1)</div><div class="line">        &#123;</div><div class="line">            perror(&quot;epoll_wait&quot;);</div><div class="line">            continue;</div><div class="line">        &#125;</div><div class="line">        /* 处理所有事件 */</div><div class="line">        for (n = 0; n &lt; nfds; ++n)</div><div class="line">        &#123;</div><div class="line">            if (events[n].data.fd == listenfd) </div><div class="line">            &#123;</div><div class="line">                connfd = accept(listenfd, (struct sockaddr *)&amp;cliaddr,&amp;socklen);</div><div class="line">                if (connfd &lt; 0) </div><div class="line">                &#123;</div><div class="line">                    perror(&quot;accept error&quot;);</div><div class="line">                    continue;</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                sprintf(buf, &quot;accept form %s:%d\n&quot;, inet_ntoa(cliaddr.sin_addr), cliaddr.sin_port);</div><div class="line">                printf(&quot;%d:%s&quot;, ++acceptCount, buf);</div><div class="line"></div><div class="line">                if (curfds &gt;= MAXEPOLLSIZE) &#123;</div><div class="line">                    fprintf(stderr, &quot;too many connection, more than %d\n&quot;, MAXEPOLLSIZE);</div><div class="line">                    close(connfd);</div><div class="line">                    continue;</div><div class="line">                &#125; </div><div class="line">                if (setnonblocking(connfd) &lt; 0) &#123;</div><div class="line">                    perror(&quot;setnonblocking error&quot;);</div><div class="line">                &#125;</div><div class="line">                ev.events = EPOLLIN | EPOLLET;</div><div class="line">                ev.data.fd = connfd;</div><div class="line">                if (epoll_ctl(kdpfd, EPOLL_CTL_ADD, connfd, &amp;ev) &lt; 0)</div><div class="line">                &#123;</div><div class="line">                    fprintf(stderr, &quot;add socket &apos;%d&apos; to epoll failed: %s\n&quot;, connfd, strerror(errno));</div><div class="line">                    return -1;</div><div class="line">                &#125;</div><div class="line">                curfds++;</div><div class="line">                continue;</div><div class="line">            &#125; </div><div class="line">            // 处理客户端请求</div><div class="line">            if (handle(events[n].data.fd) &lt; 0) &#123;</div><div class="line">                epoll_ctl(kdpfd, EPOLL_CTL_DEL, events[n].data.fd,&amp;ev);</div><div class="line">                curfds--;</div><div class="line"></div><div class="line"></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    close(listenfd);</div><div class="line">    return 0;</div><div class="line">&#125;</div><div class="line">int handle(int connfd) &#123;</div><div class="line">    int nread;</div><div class="line">    char buf[MAXLINE];</div><div class="line">    nread = read(connfd, buf, MAXLINE);//读取客户端socket流</div><div class="line"></div><div class="line">    if (nread == 0) &#123;</div><div class="line">        printf(&quot;client close the connection\n&quot;);</div><div class="line">        close(connfd);</div><div class="line">        return -1;</div><div class="line">    &#125; </div><div class="line">    if (nread &lt; 0) &#123;</div><div class="line">        perror(&quot;read error&quot;);</div><div class="line">        close(connfd);</div><div class="line">        return -1;</div><div class="line">    &#125;    </div><div class="line">    write(connfd, buf, nread);//响应客户端  </div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>编译和启动服务端</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gcc epoll_server.c -o epoll_server</div><div class="line">./epollserver</div></pre></td></tr></table></figure></p>
-]]></content>
+<p>```</p>
+<p>#include  <unistd.h></unistd.h></p>
+<p>#include  <sys types.h="">       /<em> basic system data types </em>/</sys></p>
+<p>#include  <sys socket.h="">      /<em> basic socket definitions </em>/</sys></p>
+<p>#include  <netinet in.h="">      /<em> sockaddr_in{} and other Internet defns </em>/</netinet></p>
+<p>#include  <arpa inet.h="">       /<em> inet(3) functions </em>/</arpa></p>
+<p>#include <sys epoll.h=""> /<em> epoll function </em>/</sys></p>
+<p>#include <fcntl.h>     /<em> nonblocking </em>/</fcntl.h></p>
+<p>#include <sys resource.h=""> /<em>setrlimit </em>/</sys></p>
+<p>#include <stdlib.h></stdlib.h></p>
+<p>#include <errno.h></errno.h></p>
+<p>#include <stdio.h></stdio.h></p>
+<p>#include <string.h></string.h></p>
+<p>#define MAXEPOLLSIZE 10000</p>
+<p>#define MAXLINE 10240<br>int handle(int connfd);<br>int setnonblocking(int sockfd)<br>{<br>    if (fcntl(sockfd, F_SETFL, fcntl(sockfd, F_GETFD, 0)|O_NONBLOCK) == -1) {<br>        return -1;<br>    }<br>    return 0;<br>}</p>
+<p>int main(int argc, char **argv)<br>{<br>    int  servPort = 6888;<br>    int listenq = 1024;</p>
+<pre><code>int listenfd, connfd, kdpfd, nfds, n, nread, curfds,acceptCount = 0;
+struct sockaddr_in servaddr, cliaddr;
+socklen_t socklen = sizeof(struct sockaddr_in);
+struct epoll_event ev;
+struct epoll_event events[MAXEPOLLSIZE];
+struct rlimit rt;
+char buf[MAXLINE];
+
+/* 设置每个进程允许打开的最大文件数 */
+rt.rlim_max = rt.rlim_cur = MAXEPOLLSIZE;
+if (setrlimit(RLIMIT_NOFILE, &amp;rt) == -1) 
+{
+    perror(&quot;setrlimit error&quot;);
+    return -1;
+}
+
+
+bzero(&amp;servaddr, sizeof(servaddr));
+servaddr.sin_family = AF_INET; 
+servaddr.sin_addr.s_addr = htonl (INADDR_ANY);
+servaddr.sin_port = htons (servPort);
+
+listenfd = socket(AF_INET, SOCK_STREAM, 0); 
+if (listenfd == -1) {
+    perror(&quot;can&apos;t create socket file&quot;);
+    return -1;
+}
+
+int opt = 1;
+setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &amp;opt, sizeof(opt));
+
+if (setnonblocking(listenfd) &lt; 0) {
+    perror(&quot;setnonblock error&quot;);
+}
+
+if (bind(listenfd, (struct sockaddr *) &amp;servaddr, sizeof(struct sockaddr)) == -1) 
+{
+    perror(&quot;bind error&quot;);
+    return -1;
+} 
+if (listen(listenfd, listenq) == -1) 
+{
+    perror(&quot;listen error&quot;);
+    return -1;
+}
+/* 创建 epoll 句柄，把监听 socket 加入到 epoll 集合里 */
+kdpfd = epoll_create(MAXEPOLLSIZE);
+ev.events = EPOLLIN | EPOLLET;
+ev.data.fd = listenfd;
+if (epoll_ctl(kdpfd, EPOLL_CTL_ADD, listenfd, &amp;ev) &lt; 0) 
+{
+    fprintf(stderr, &quot;epoll set insertion error: fd=%d\n&quot;, listenfd);
+    return -1;
+}
+curfds = 1;
+
+printf(&quot;epollserver startup,port %d, max connection is %d, backlog is %d\n&quot;, servPort, MAXEPOLLSIZE, listenq);
+
+for (;;) {
+    /* 等待有事件发生 */
+    nfds = epoll_wait(kdpfd, events, curfds, -1);
+    if (nfds == -1)
+    {
+        perror(&quot;epoll_wait&quot;);
+        continue;
+    }
+    /* 处理所有事件 */
+    for (n = 0; n &lt; nfds; ++n)
+    {
+        if (events[n].data.fd == listenfd) 
+        {
+            connfd = accept(listenfd, (struct sockaddr *)&amp;cliaddr,&amp;socklen);
+            if (connfd &lt; 0) 
+            {
+                perror(&quot;accept error&quot;);
+                continue;
+            }
+
+            sprintf(buf, &quot;accept form %s:%d\n&quot;, inet_ntoa(cliaddr.sin_addr), cliaddr.sin_port);
+            printf(&quot;%d:%s&quot;, ++acceptCount, buf);
+
+            if (curfds &gt;= MAXEPOLLSIZE) {
+                fprintf(stderr, &quot;too many connection, more than %d\n&quot;, MAXEPOLLSIZE);
+                close(connfd);
+                continue;
+            } 
+            if (setnonblocking(connfd) &lt; 0) {
+                perror(
+</code></pre>]]></content>
     
     <summary type="html">
     
