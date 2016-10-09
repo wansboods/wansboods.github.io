@@ -1,427 +1,47 @@
-<!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
-<!--[if !IE]><!-->
-<html lang="en">
-<!--<![endif]-->
-<head>
-  <meta charset="utf-8">
+<?xml version="1.0" encoding="utf-8"?>
+<search>
   
-  <title>Linux IO多路复用之epoll网络编程 | 甲子· 映像</title>
-
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-
-  <meta name="description" content="服务端代码
-epoll_server.c
-
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Linux IO多路复用之epoll网络编程">
-<meta property="og:url" content="http://wansboods.github.io/2016/09/25/IO多路复用之epoll网络编程/index.html">
-<meta property="og:site_name" content="甲子· 映像">
-<meta property="og:description" content="服务端代码
-epoll_server.c
-
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939">
-<meta property="og:updated_time" content="2016-09-25T08:25:28.831Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux IO多路复用之epoll网络编程">
-<meta name="twitter:description" content="服务端代码
-epoll_server.c
-
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939">
-  
-    <link rel="alternative" href="/atom.xml" title="甲子· 映像" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.ico">
   
     
-  <meta content="{{ title }}" name="description">
-  <meta content="{{ title }}" name="keywords">
-  <meta content="{{ title }}" name="author">
-
-  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|PT+Sans+Narrow|Source+Sans+Pro:200,300,400,600,700,900&amp;subset=all" rel="stylesheet" type="text/css">
-
-  <!-- Global styles START -->   
-  <link rel="stylesheet" href="/metronic/assets/plugins/font-awesome/css/font-awesome.min.css">
-  <link rel="stylesheet" href="/metronic/assets/plugins/bootstrap/css/bootstrap.min.css">
-  <!-- Global styles END --> 
-   
-  <!-- Page level plugin styles START -->
-  <link rel="stylesheet" href="/metronic/assets/pages/css/animate.css">
-  <link rel="stylesheet" href="/metronic/assets/plugins/owl.carousel/assets/owl.carousel.css">
-  <!-- Page level plugin styles END -->
-
-  <!-- Theme styles START -->
-  <link rel="stylesheet" href="/metronic/assets/pages/css/components.css">
-  <link rel="stylesheet" href="/metronic/assets/pages/css/slider.css">
-  <link rel="stylesheet" href="/metronic/assets/corporate/css/style.css">
-  <link rel="stylesheet" href="/metronic/assets/pages/css/portfolio.css">
-  <link rel="stylesheet" href="/metronic/assets/corporate/css/style-responsive.css">
-  <link rel="stylesheet" href="/metronic/assets/corporate/css/themes/blue.css">
-  <link rel="stylesheet" href="/css/theme-styles.css">
-  <!-- Theme styles END -->
-</head>
-
-<body class="corporate">
-  <!-- BEGIN TOP BAR -->
-<div class="pre-header">
-  <div class="container">
-    <div class="row">
-      <!-- BEGIN TOP BAR LEFT PART -->
-      <div class="col-md-6 col-sm-6 col-xs-9 additional-shop-info">
-	<ul class="list-unstyled list-inline">
-	  <li><i class="fa fa-phone"></i><span>15675101907</span></li>
-	  <li><i class="fa fa-envelope-o"></i><span>wansboods@gmail.com</span></li>
-	</ul>
-      </div>
-      <!-- END TOP BAR LEFT PART -->
-      <!-- BEGIN TOP BAR MENU -->
-      <div class="col-md-6 col-sm-6 col-xs-3 additional-nav">
-	<ul class="list-unstyled list-inline pull-right">
-	  <!-- <li><a href="/login">login</a></li> -->
-	  <li><a href="/login"><span style="background-color:#B4009E;color:#ffffff;">&nbsp;Login&nbsp;</span></a></li>
-	</ul>
-      </div>
-      <!-- END TOP BAR MENU -->
-    </div>
-  </div>        
-</div>
-<!-- END TOP BAR -->
-<!-- BEGIN HEADER -->
-<div class="header">
-  <div class="container">
-    <!--<a class="site-logo" href="/" id="logo">甲子· 映像</a>-->
-
-    <a class="site-logo" href="/">
-      <img src="/metronic/assets/corporate/img/logos/logo-corp-blue.png" alt="Metronic FrontEnd">
-    </a>
-
-    <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
-
-    <!-- BEGIN NAVIGATION -->
-    <div class="header-navigation pull-right font-transform-inherit">
-      <ul>
-	
-	<li class="">
-	  <a  href="/">首页</a>
-	</li>
-	
-	<li class="">
-	  <a  href="/projects/">项目</a>
-	</li>
-	
-	<li class="">
-	  <a  href="/archives/">博客</a>
-	</li>
-	
-	<li class="">
-	  <a  href="/contact/">位置</a>
-	</li>
-	
-	<li class="">
-	  <a  href="/about/">关于</a>
-	</li>
-	
-	<!-- BEGIN TOP SEARCH -->
-	<li class="menu-search">
-	  <span class="sep"></span>
-	  <i class="fa fa-search search-btn"></i>
-	  <div class="search-box">
-	    <form action="#">
-	      <div class="input-group">
-		<input type="text" placeholder="Search" class="form-control st-default-search-input">
-		<span class="input-group-btn">
-		  <button class="btn btn-primary" type="submit">Search</button>
-		</span>
-	      </div>
-	    </form>
-	  </div> 
-	</li>
-	<!-- END TOP SEARCH -->
-      </ul>
-    </div>
-    <!-- END NAVIGATION -->
-  </div>
-</div>
-<!-- Header END -->
-
-  <div class="container">
-  <ul class="breadcrumb">
-    <li><a href="/">首页</a></li>
-    <!-- 
-        <li><a href="undefined">博客</a></li>
-    -->
-     <li><a href="/archives/">博客</a></li>
-    <li class="active">post</li>
-  </ul>
-  <section id="main">
-    
-    <h2 itemprop="name">
-      <a class="article-title" href="/2016/09/25/IO多路复用之epoll网络编程/">Linux IO多路复用之epoll网络编程</a>
-    </h2>
-
-
-    <div class="row">
-<div class="col-md-9 col-sm-9 blog-posts">
-<article id="post-IO多路复用之epoll网络编程" class="article article-type-post blog-item" itemscope itemprop="blogPost">
-  <div class="article-meta">
-  </div>
-  <div class="article-inner">
-    
-    
-    <header class="article-header">
-      <ul class="blog-info">
-	<li><i class="fa fa-user"></i> Anonymous</li>
-	<li><i class="fa fa-calendar"></i>
-	  <time datetime="2016-09-24T16:00:00.000Z" itemprop="datePublished">2016/09/25</time>
-
-	</li>
-	<li class="hidden-xs"><i class="fa fa-comments"></i>
-	  <a href="http://wansboods.github.io/2016/09/25/IO多路复用之epoll网络编程/#disqus_thread" class="article-comment-link">Comments</a>
-	</li>
-	<li class="hidden-xs"><i class="fa fa-tags"></i> 
-	  
-  
-    <a href="/tags/Linux/" title="Linux">Linux</a>,
-  
-    <a href="/tags/编程/" title="编程">编程</a>
-  
-
-
-	</li>
-      </ul>
-      
-  <div class="article-category">
-    
-    Category: 
-    
-    Categories:
-    <a class="article-category-link" href="/categories/Linux/">Linux</a>
-  </div>
-  <br>
-
-
-    </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="服务端代码"><a href="#服务端代码" class="headerlink" title="服务端代码"></a><strong>服务端代码</strong></h2><blockquote>
+    <entry>
+      <title><![CDATA[Linux IO多路复用之epoll网络编程]]></title>
+      <url>http://wansboods.github.io/2016/09/25/IO%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E4%B9%8Bepoll%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</url>
+      <content type="html"><![CDATA[<h2 id="服务端代码"><a href="#服务端代码" class="headerlink" title="服务端代码"></a><strong>服务端代码</strong></h2><blockquote>
 <p>epoll_server.c</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div></pre></td><td class="code"><pre><div class="line">#include  &lt;unistd.h&gt;</div><div class="line">#include  &lt;sys/types.h&gt;       /* basic system data types */</div><div class="line">#include  &lt;sys/socket.h&gt;      /* basic socket definitions */</div><div class="line">#include  &lt;netinet/in.h&gt;      /* sockaddr_in&#123;&#125; and other Internet defns */</div><div class="line">#include  &lt;arpa/inet.h&gt;       /* inet(3) functions */</div><div class="line">#include &lt;sys/epoll.h&gt; /* epoll function */</div><div class="line">#include &lt;fcntl.h&gt;     /* nonblocking */</div><div class="line">#include &lt;sys/resource.h&gt; /*setrlimit */</div><div class="line"></div><div class="line">#include &lt;stdlib.h&gt;</div><div class="line">#include &lt;errno.h&gt;</div><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;string.h&gt;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">#define MAXEPOLLSIZE 10000</div><div class="line">#define MAXLINE 10240</div><div class="line">int handle(int connfd);</div><div class="line">int setnonblocking(int sockfd)</div><div class="line">&#123;</div><div class="line">    if (fcntl(sockfd, F_SETFL, fcntl(sockfd, F_GETFD, 0)|O_NONBLOCK) == -1) &#123;</div><div class="line">        return -1;</div><div class="line">    &#125;</div><div class="line">    return 0;</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main(int argc, char **argv)</div><div class="line">&#123;</div><div class="line">    int  servPort = 6888;</div><div class="line">    int listenq = 1024;</div><div class="line"></div><div class="line">    int listenfd, connfd, kdpfd, nfds, n, nread, curfds,acceptCount = 0;</div><div class="line">    struct sockaddr_in servaddr, cliaddr;</div><div class="line">    socklen_t socklen = sizeof(struct sockaddr_in);</div><div class="line">    struct epoll_event ev;</div><div class="line">    struct epoll_event events[MAXEPOLLSIZE];</div><div class="line">    struct rlimit rt;</div><div class="line">    char buf[MAXLINE];</div><div class="line"></div><div class="line">    /* 设置每个进程允许打开的最大文件数 */</div><div class="line">    rt.rlim_max = rt.rlim_cur = MAXEPOLLSIZE;</div><div class="line">    if (setrlimit(RLIMIT_NOFILE, &amp;rt) == -1) </div><div class="line">    &#123;</div><div class="line">        perror(&quot;setrlimit error&quot;);</div><div class="line">        return -1;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    bzero(&amp;servaddr, sizeof(servaddr));</div><div class="line">    servaddr.sin_family = AF_INET; </div><div class="line">    servaddr.sin_addr.s_addr = htonl (INADDR_ANY);</div><div class="line">    servaddr.sin_port = htons (servPort);</div><div class="line"></div><div class="line">    listenfd = socket(AF_INET, SOCK_STREAM, 0); </div><div class="line">    if (listenfd == -1) &#123;</div><div class="line">        perror(&quot;can&apos;t create socket file&quot;);</div><div class="line">        return -1;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    int opt = 1;</div><div class="line">    setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &amp;opt, sizeof(opt));</div><div class="line"></div><div class="line">    if (setnonblocking(listenfd) &lt; 0) &#123;</div><div class="line">        perror(&quot;setnonblock error&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    if (bind(listenfd, (struct sockaddr *) &amp;servaddr, sizeof(struct sockaddr)) == -1) </div><div class="line">    &#123;</div><div class="line">        perror(&quot;bind error&quot;);</div><div class="line">        return -1;</div><div class="line">    &#125; </div><div class="line">    if (listen(listenfd, listenq) == -1) </div><div class="line">    &#123;</div><div class="line">        perror(&quot;listen error&quot;);</div><div class="line">        return -1;</div><div class="line">    &#125;</div><div class="line">    /* 创建 epoll 句柄，把监听 socket 加入到 epoll 集合里 */</div><div class="line">    kdpfd = epoll_create(MAXEPOLLSIZE);</div><div class="line">    ev.events = EPOLLIN | EPOLLET;</div><div class="line">    ev.data.fd = listenfd;</div><div class="line">    if (epoll_ctl(kdpfd, EPOLL_CTL_ADD, listenfd, &amp;ev) &lt; 0) </div><div class="line">    &#123;</div><div class="line">        fprintf(stderr, &quot;epoll set insertion error: fd=%d\n&quot;, listenfd);</div><div class="line">        return -1;</div><div class="line">    &#125;</div><div class="line">    curfds = 1;</div><div class="line"></div><div class="line">    printf(&quot;epollserver startup,port %d, max connection is %d, backlog is %d\n&quot;, servPort, MAXEPOLLSIZE, listenq);</div><div class="line"></div><div class="line">    for (;;) &#123;</div><div class="line">        /* 等待有事件发生 */</div><div class="line">        nfds = epoll_wait(kdpfd, events, curfds, -1);</div><div class="line">        if (nfds == -1)</div><div class="line">        &#123;</div><div class="line">            perror(&quot;epoll_wait&quot;);</div><div class="line">            continue;</div><div class="line">        &#125;</div><div class="line">        /* 处理所有事件 */</div><div class="line">        for (n = 0; n &lt; nfds; ++n)</div><div class="line">        &#123;</div><div class="line">            if (events[n].data.fd == listenfd) </div><div class="line">            &#123;</div><div class="line">                connfd = accept(listenfd, (struct sockaddr *)&amp;cliaddr,&amp;socklen);</div><div class="line">                if (connfd &lt; 0) </div><div class="line">                &#123;</div><div class="line">                    perror(&quot;accept error&quot;);</div><div class="line">                    continue;</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                sprintf(buf, &quot;accept form %s:%d\n&quot;, inet_ntoa(cliaddr.sin_addr), cliaddr.sin_port);</div><div class="line">                printf(&quot;%d:%s&quot;, ++acceptCount, buf);</div><div class="line"></div><div class="line">                if (curfds &gt;= MAXEPOLLSIZE) &#123;</div><div class="line">                    fprintf(stderr, &quot;too many connection, more than %d\n&quot;, MAXEPOLLSIZE);</div><div class="line">                    close(connfd);</div><div class="line">                    continue;</div><div class="line">                &#125; </div><div class="line">                if (setnonblocking(connfd) &lt; 0) &#123;</div><div class="line">                    perror(&quot;setnonblocking error&quot;);</div><div class="line">                &#125;</div><div class="line">                ev.events = EPOLLIN | EPOLLET;</div><div class="line">                ev.data.fd = connfd;</div><div class="line">                if (epoll_ctl(kdpfd, EPOLL_CTL_ADD, connfd, &amp;ev) &lt; 0)</div><div class="line">                &#123;</div><div class="line">                    fprintf(stderr, &quot;add socket &apos;%d&apos; to epoll failed: %s\n&quot;, connfd, strerror(errno));</div><div class="line">                    return -1;</div><div class="line">                &#125;</div><div class="line">                curfds++;</div><div class="line">                continue;</div><div class="line">            &#125; </div><div class="line">            // 处理客户端请求</div><div class="line">            if (handle(events[n].data.fd) &lt; 0) &#123;</div><div class="line">                epoll_ctl(kdpfd, EPOLL_CTL_DEL, events[n].data.fd,&amp;ev);</div><div class="line">                curfds--;</div><div class="line"></div><div class="line"></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    close(listenfd);</div><div class="line">    return 0;</div><div class="line">&#125;</div><div class="line">int handle(int connfd) &#123;</div><div class="line">    int nread;</div><div class="line">    char buf[MAXLINE];</div><div class="line">    nread = read(connfd, buf, MAXLINE);//读取客户端socket流</div><div class="line"></div><div class="line">    if (nread == 0) &#123;</div><div class="line">        printf(&quot;client close the connection\n&quot;);</div><div class="line">        close(connfd);</div><div class="line">        return -1;</div><div class="line">    &#125; </div><div class="line">    if (nread &lt; 0) &#123;</div><div class="line">        perror(&quot;read error&quot;);</div><div class="line">        close(connfd);</div><div class="line">        return -1;</div><div class="line">    &#125;    </div><div class="line">    write(connfd, buf, nread);//响应客户端  </div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><strong>编译和启动服务端</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gcc epoll_server.c -o epoll_server</div><div class="line">./epollserver</div></pre></td></tr></table></figure></p>
-
-      
-    </div>
-  </div>
-  
+]]></content>
+    </entry>
     
-<nav id="article-nav">
-  
-  
-    <a href="/2016/01/02/硬盘SMART检测参数详解/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">硬盘SMART检测参数详解</div>
-    </a>
-  
-</nav>
-
-  
-  <br>
-</article>
-
-
-
-
-</div>
-<div class="col-md-3 col-sm-3 blog-sidebar">
-  <!-- CATEGORIES START -->
-<h2 class="no-top-space">Categories</h2>
-
-<div class="widget-wrap">
-  <div class="widget">
-    <ul class="nav sidebar-categories margin-bottom-40">
-      
-	<li>
-	  <a href="/categories/Linux/">Linux (2)</a>
-	</li>
-      
-    </ul>
-  </div>
-</div>
-
-
-<!-- CATEGORIES END -->
-
-<!-- BEGIN BLOG TAGS -->
-<div class="blog-tags margin-bottom-20">
-  <h2>Tags</h2>
-  
-  <div class="widget-wrap">
-    <div class="widget">
-      
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/"><i class='fa fa-tags'></i>Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/硬盘操作/"><i class='fa fa-tags'></i>硬盘操作</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程/"><i class='fa fa-tags'></i>编程</a></li></ul>
-    </div>
-  </div>
-
-
-</div>
-<!-- END BLOG TAGS -->
-
-
-<!-- BEGIN FEATURED POSTS -->                            
-<h2>Featured Posts</h2>
-<div class="recent-news margin-bottom-10">
-  
+    <entry>
+      <title><![CDATA[硬盘SMART检测参数详解]]></title>
+      <url>http://wansboods.github.io/2016/01/02/%E7%A1%AC%E7%9B%98SMART%E6%A3%80%E6%B5%8B%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/</url>
+      <content type="html"><![CDATA[<p>现代硬件驱动器一般支持SMART（自我监测分析和报告技术），它能够监视整个硬盘驱动器的健康状况，并且当硬盘驱动器即将故障的时候会发出警告。</p>
+<p>一般硬件厂商提供的磁盘工具，是在系统重启后检查磁盘驱动的健康状况，而SMART可以不用重启系统就可以检查硬盘驱动器的健康程度。</p>
+<p>在linux中，工具包的名字为 <strong>smartmontools</strong></p>
+<p>在CentOS中可以使用 yum install smartmontools来安装工具<br>首先通过smartctl -i /dev/sda 来检查一下硬盘是否具有 SMART 特性</p>
+<p>下面是smart工具的说明文档，里面有<a href="https://www.smartmontools.org/" target="_blank" rel="external">详细的说明</a></p>
+<p>这个是我在虚拟机中测试的不支持<br><img src="http://www.linuxidc.com/upload/2014_07/140725095423431.png" alt=""><br>这个是我在真服务器中测试的，支持<br>SMART support 是 Disabled 状态的话，需要开启 SMART 的支持：<br>然后使用smartctl -H /dev/sda来检测磁盘的健康状况<br>查看/dev/sda当前整体监控状态。PASSED表示健康，否则意味着磁盘已经故障，或很快就会发生故障。</p>
+<p><img src="http://www.linuxidc.com/upload/2014_07/140725095423432.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">smartctl -s on /dev/sda</div><div class="line">smartctl -H /dev/sda&lt;/code&gt;</div></pre></td></tr></table></figure>
+<p>使用</p>
+<p>smartctl -t short /dev/sda</p>
+<p>做一个快速自检</p>
+<p>smartctl -l selftest /dev/sda</p>
+<p>查看自检的进度和结果</p>
+<p>使用smartctl -t long /dev/sda 做长时间自检，这个很耗时，一般放在凌晨</p>
+<p>使用smartctl -l error /dev/sda查看出错日志</p>
+<p>在这里，我的读、写都没有发生错误，在Non-medium error count 中出现错误6。</p>
+<p>我一直没有搞懂（非媒介错误计数）这个是什么意思，在官方文档查了一下，出现如下：</p>
+<p>non-medium error counter (only a single number displayed). This represents the number of recoverable events other than write, read or verify errors.</p>
+<p>我大致理解了一下，是除了read,write,verify errors的错误，可恢复事件的数量</p>
+<p>查看所有信息<br>打印/dev/sda所有的SMART信息。<br>smartctl -a /dev/sda<br>相当于依次执行：<br>smartctl –i /dev/sda<br>smartctl -c /dev/sda<br>smartctl -A /dev/sda<br>smartctl -l error /dev/sda<br>smartctl -l selftest /dev/sda<br>smartctl -l selective /dev/sda<br>开/关SMART功能<br>打开或关闭/dev/sda 的SMART功能。<br>smartctl -s on/off /dev/sda<br>查看当前SMART功能是否开启，可以使用 –i 参数。<br>smartctl -i /dev/sda<br>离线测试<br>对/dev/sda进行离线测试，它的结果主要用来更新SMART 属性。<br>smartctl -t offline /dev/sda<br>观察测试进度<br>通过-c 参数，可以观察到测试的进度：<br>smartctl -c /dev/sda</p>
+<p>smartctl参数帮助</p>
+<p>-h 帮助信息<br>-V 版本信息<br>-i 打印基本信息（磁盘设备号、序列号、固件版本…）<br>-a 打印磁盘所有的SMART信息<br>运行时行为 参数：<br>-q TYPE 指定输出的安静模式。<br>TYPE可以有3种选择：<br>eorsonly 只打印错误日志。<br>slent 有任何打印。<br>nserial 不打印序列号<br>-d TYPE 指定磁盘的类型。如果没有指定，smartctl会根据磁盘的名字来<br>猜测磁盘类型。<br>-T TYPE 指定当发生错误时，smartctl的容忍程度，是否继续运行。<br>TYPE可以有4种选择：<br>conservative 一有错就会退出<br>normal 如果必须支持的SMART命令失败，则退出<br>permissive 忽略一次必须支持的SMART命令失败<br>verypermissive 忽略所有必须支持的SMART命令失败<br>-b TYPE 指定当发生校验错误时，smartctl的动作。<br>TYPE有3种选择：<br>warn 发出警告，继续执行<br>exit 退出smartctl<br>ignore 不发出告警，继续执行<br>-r TYPE smartmontools开发人员相关。<br>-n POWERMODE 指定当磁盘处于节能模式时，smartctl是否继续检查，<br>默认是不检查。<br>POWERMODE有4种选择：<br>never 检查<br>sleep 除了sleep模式，检查。<br>standby 除了sleep或standby模式，检查。<br>idle 除了sleep或standby或idle模式，见车。<br>SMART功能开关 参数：<br>-s on/off 打开或关闭磁盘的SMART功能<br>-o on/off 打开或关闭SMART自动离线检测，该功能每4小时就会自动扫描磁盘是<br>否有缺陷。<br>-S on/off 打开或关闭“自动保存厂商指定属性”功能。<br>SMART 读和显示数据 参数<br>-H 报告磁盘的是否健康。如果报告不健康，则说明磁盘已经损坏或会在24小时<br>内损坏。<br>-c 显示磁盘支持的普通SMART功能，以及这些功能当前的状态。<br>-A 显示磁盘支持的厂商指定SMART特性。这些特性的编号从1-253，并且有指<br>定的名字。<br>-l TYPE 指定显示的log类型。<br>TYPE有4种选择：<br>error 只显示error log。<br>selftest 只显示selftest log<br>selective 只显示selective self-test log<br>directory 只显示Log Directory<br>-v N,OPTION 显示厂商指定SMART特性N时，使用厂商相关的显示方式。<br>-F TYPE 设置smartctl的行为，当出现一些已知但还没有解决的硬件或软件bug时，<br>smartctl应该怎么做。<br>-P TYPE 设置smartctl是否对磁盘使用数据库中已有的参数。<br>SMART 离线测试、自测试 参数<br>-t TEST 立刻执行测试，可以和-C参数一起使用。<br>TEST可以有以下几个选择：<br>offline 离线测试。可以在挂载文件系统的磁盘上使用<br>short 短时间测试。可以在挂载文件系统的磁盘上使用。<br>long 长时间测试。可以在挂载文件系统的磁盘上使用。<br>conveyance [ATA only]传输zi测试。可以在挂载文件系统的磁盘上使用。<br>select, N-M<br>select, N+SIZE [ATA only]有选择性测试，测试磁盘的部分LBA。N表示<br>LBA编号，M表示结束LBA编号，SIZE表示测试的LBA<br>范围。<br>-C 在captive模式下运行测试。<br>注意：（1）-C必须配合-t一起使用，但如果是-t offline，则-C不生效。<br>（2）-C会使得磁盘很忙，所以最好是在没有挂载文件系统的磁盘上使用。<br>-X 中断no-captive模式下运行的测试</p>
+]]></content>
+    </entry>
     
   
-    
   
-</div>
-<!-- END FEATURED POSTS -->                            
-
-</div>
-</div>
-
-  </section>
-</div>
-
-    <!-- BEGIN PRE-FOOTER -->
-    <div class="pre-footer">
-      <div class="container">
-        <div class="row">
-          <!-- BEGIN BOTTOM ABOUT BLOCK -->
-          <div class="col-md-4 col-sm-6 pre-footer-col">
-            <h2>寄语</h2>
-            <p>所有的终结是新的开始.<br>すべての終(お)わりは新(あら)たなる始(はじ)まりである</p>
-          </div>
-          <!-- END BOTTOM ABOUT BLOCK -->
-
-          <!-- BEGIN BOTTOM CONTACTS -->
-          <div class="col-md-4 col-sm-6 pre-footer-col">
-            <h2>位置</h2>
-            <address class="margin-bottom-40">
-              湖南长沙市<br>
-              岳麓区<br>
-              梅溪湖 金茂<br>
-              Phone: 15675101907<br>
-              Email: <a href="mailto:wansboods@gmail.com">wansboods@gmail.com</a><br>
-            </address>
-          </div>
-          <!-- END BOTTOM CONTACTS -->
-
-	
-          <!-- BEGIN TWITTER BLOCK --> 
-          <div class="col-md-4 col-sm-6 pre-footer-col">
-
-	  <a data-tweet-limit="1" class="twitter-timeline"
-	  href="https://twitter.com/sean_jiazi"
-	  data-widget-id="sean_jiazi">Tweets by @sean_jiazi</a>
-
-	  <script>!function(d,s,id){var
-	  js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-
-          </div>
-          <!-- END TWITTER BLOCK -->
-	
-        </div>
-      </div>
-    </div>
-    <!-- END PRE-FOOTER -->
-
-    <!-- BEGIN FOOTER -->
-    <div class="footer">
-      <div class="container">
-        <div class="row">
-          <!-- BEGIN COPYRIGHT -->
-          <div class="col-md-6 col-sm-6 padding-top-10">
-                  &copy; 2016 甲子· 映像<br>
- <a href="javascript:;">Privacy Policy</a> | <a href="javascript:;">Terms of Service</a>
-          </div>
-          <!-- END COPYRIGHT -->
-	  <!-- BEGIN SOCIAL -->
-<div class="col-md-6 col-sm-6">
-  <ul class="social-footer list-unstyled list-inline pull-right">
-    
-      <li><a href="https://github.com/wansboods"><i class="fa fa-github"></i></a></li>
-    
-      <li><a href="https://twitter.com/sean_jiazi"><i class="fa fa-twitter"></i></a></li>
-    
-      <li><a href="https://www.facebook.com/wansboods"><i class="fa fa-facebook"></i></a></li>
-    
-      <li><a href="/atom.xml"><i class="fa fa-rss"></i></a></li>
-    
-      <li><a href="https://www.linkedin.com/in/wansboods"><i class="fa fa-linkedin"></i></a></li>
-    
-      <li><a href="http://stackoverflow.com/users/6825833/sean-wan"><i class="fa fa-stackoverflow"></i></a></li>
-    
-  </ul>  
-</div>
-<!-- END SOCIAL -->
-
-        </div>
-      </div>
-    </div>
-    <!-- END FOOTER -->
-
-  <!-- BEGIN CORE PLUGINS (REQUIRED FOR ALL PAGES) -->
-<!--[if lt IE 9]>
-<script src="/metronic/assets/plugins/respond.min.js"></script>
-<![endif]--> 
-<script src="/metronic/assets/plugins/jquery.min.js"></script>
-<script src="/metronic/assets/plugins/jquery-migrate.min.js"></script>
-<script src="/metronic/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="/metronic/assets/corporate/scripts/back-to-top.js"></script>
-<script src="/metronic/assets/plugins/owl.carousel/owl.carousel.min.js"></script>
-<script src="/metronic/assets/corporate/scripts/layout.js"></script>
-<script src="/js/wow.min.js"></script>
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script type="text/javascript">
-    jQuery(document).ready(function() {
-        Layout.init();    
-        Layout.initOWL();
-        Layout.initTwitter();
-        Layout.initFixHeaderWithPreHeader(); /* Switch On Header Fixing (only if you have pre-header) */
-        Layout.initNavScrolling(); 
-	new WOW().init();
-    });
-</script>
-<!-- END CORE PLUGINS -->
-
-<!-- BEGIN PAGE-SPECIFIC PLUGINS --> 
-
-
-
-
-
-
-
-<!-- END PAGE-SPECIFIC PLUGINS --> 
-
-<!-- BEGIN INTEGRATIONS -->
-
-    <script type="text/javascript">
-        (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
-                (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
-            e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
-        })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
-
-        _st('install','svywGe9qHKC3QmmhEepb','2.0.0');
-    </script>
-
-
-
-
-
-<!-- END INTEGRATIONS -->
-
-</body>
-</html>
+</search>
